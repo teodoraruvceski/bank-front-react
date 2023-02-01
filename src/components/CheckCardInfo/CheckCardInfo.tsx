@@ -16,10 +16,9 @@ import {
 import { finishPayment, getPaymentInfo } from '../../services/service';
 import { allowedNodeEnvironmentFlags } from 'process';
 import { BsDot } from 'react-icons/bs';
-import bcrypt from 'bcryptjs-react';
 //import { login, getToken } from '../services/service';
 
-function Home() {
+function ChackCardInfo() {
 	//const navigate = useNavigate();
 	const [name, setName] = useState('');
 	const [csc, setCsc] = useState('');
@@ -32,19 +31,16 @@ function Home() {
 		const search = window.location.search;
 		const params = new URLSearchParams(search);
 		const id = params.get('paymentId');
+		setCsc(params.get('csc') || '');
 		console.log(id);
 		const get = async (id: string) => {
 			const data = await getPaymentInfo(id);
 			console.log(data);
-			if (!data.data.successful) {
-				alert('Neautorizovan pristup.');
-			} else {
-				setPayment(data.data.payment);
-				setMerchant({
-					name: data.data.merchant_name,
-					account_number: data.data.merchant_account,
-				});
-			}
+			setPayment(data.data.payment);
+			setMerchant({
+				name: data.data.merchant_name,
+				account_number: data.data.merchant_account,
+			});
 		};
 		get(id || '');
 	}, []);
@@ -75,10 +71,6 @@ function Home() {
 			(Number(m) < 10 && m[0] !== '0' ? '0' + m : m) +
 			'/' +
 			(Number(y) < 10 && y[0] !== '0' ? '0' + y : y);
-		///////////////////////////////
-		var salt = bcrypt.genSaltSync(10);
-		const encPan = bcrypt.hashSync(pan, salt);
-		///////////////////////////////
 		const data = {
 			payment_id: payment.id,
 			card_h_name: name,
@@ -137,17 +129,17 @@ function Home() {
 								<Input
 									onChange={(event) => setName(event.target.value)}
 									type='text'
-									placeholder='Petar Petrovic'
 									value={name}
+									readOnly={true}
 								/>
 							</FormControl>
 							<FormControl>
 								<FormLabel>Broj kartice:</FormLabel>
 								<Input
 									type='number'
-									placeholder='1234123456785678'
 									onChange={(event) => setPan(event.target.value)}
 									value={pan}
+									readOnly={true}
 								/>
 							</FormControl>
 							<FormControl>
@@ -155,8 +147,8 @@ function Home() {
 								<Input
 									onChange={(event) => setCsc(event.target.value)}
 									type='number'
-									placeholder='123'
 									value={csc}
+									readOnly={true}
 								/>
 							</FormControl>
 							<FormControl>
@@ -165,8 +157,8 @@ function Home() {
 									<Input
 										onChange={(event) => mOnChange(event)}
 										type='number'
-										placeholder='mesec'
 										value={m}
+										readOnly={true}
 									/>
 									{'/'}
 									<Input
@@ -174,6 +166,7 @@ function Home() {
 										type='number'
 										placeholder='godina'
 										value={y}
+										readOnly={true}
 									/>
 								</InputGroup>
 							</FormControl>
@@ -194,4 +187,4 @@ function Home() {
 		</Flex>
 	);
 }
-export default Home;
+export default ChackCardInfo;

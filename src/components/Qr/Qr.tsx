@@ -39,6 +39,7 @@ function Qr() {
 			backgroundColor='gray.200'
 			justifyContent='center'
 			alignItems='center'
+			m='100px'
 		>
 			<Table>
 				<Tr>
@@ -55,7 +56,7 @@ function Qr() {
 				</Tr>
 				<Tr>
 					<Td>Amount: </Td>
-					<Td>{payment.amount}</Td>
+					<Td>{payment.amount} $</Td>
 				</Tr>
 				<Tr>
 					<Td align='center' w='20%' colSpan={2}>
