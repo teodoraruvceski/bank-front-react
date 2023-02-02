@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import {
 	Flex,
 	Input,
@@ -20,14 +21,18 @@ import bcrypt from 'bcryptjs-react';
 //import { login, getToken } from '../services/service';
 
 function Home() {
-	//const navigate = useNavigate();
+	const nav = useNavigate();
 	const [name, setName] = useState('');
 	const [csc, setCsc] = useState('');
 	const [pan, setPan] = useState('');
 	const [m, setM] = useState('');
 	const [y, setY] = useState('');
-	const [payment, setPayment] = useState({ amount: 0, id: '' });
+	const [payment, setPayment] = useState({ amount: 0, id: '', failed_url: '' });
 	const [merchant, setMerchant] = useState({ name: '', account_number: '' });
+	const cancel = () => {
+		console.log(payment);
+		window.location.href = payment.failed_url;
+	};
 	useEffect(() => {
 		const search = window.location.search;
 		const params = new URLSearchParams(search);
@@ -190,6 +195,9 @@ function Home() {
 						</Stack>
 					</form>
 				</Box>
+				<Button backgroundColor='transparent' onClick={() => cancel()}>
+					Odustani
+				</Button>
 			</Stack>
 		</Flex>
 	);
